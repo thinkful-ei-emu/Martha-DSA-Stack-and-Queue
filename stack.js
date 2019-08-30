@@ -98,64 +98,117 @@ function palindrome(string){
 
 function parentheses(expression){
   let stack = new Stack();
-  let arr = expression.split('');
-  arr.forEach(paran => stack.push(paran));
-  let node = stack.top;
-  let counter = 0;
-  while(node !== null){
-    if(node.data === '('){
-      counter --;
+  for(let i=0; i<expression.length; i++){
+    if(expression[i] === '('){
+      stack.push('(');
     }
-    if(node.data === ')'){
-      counter ++;
+    if(expression[i] === ')'){
+      if(stack.top === null){
+        return false; 
+      }
+      stack.pop();
     }
-    if(counter < 0){
-      return 'Incorrect parentheses';
-    }
-    node = node.next;
   }
-  if (counter === 0){
-    return 'Correct parentheses';
+  if(stack.top === null){
+    return true;
   }
-  else{
-    return 'Incorrect parentheses';
-  }
+  else false;
 }
 // console.log(parentheses('()(w)()frsw)')); //false
 // console.log(parentheses('()q3r()fq()')); //true
+//alternate
+/**
+ * 
+// let arr = expression.split('');
+// arr.forEach(paran => stack.push(paran));
+// let node = stack.top;
+// let counter = 0;
+// while(node !== null){
+//   if(node.data === '('){
+//     counter --;
+//   }
+//   if(node.data === ')'){
+//     counter ++;
+//   }
+//   if(counter < 0){
+//     return 'Incorrect parentheses';
+//   }
+//   node = node.next;
+// }
+// if (counter === 0){
+//   return 'Correct parentheses';
+// }
+// else{
+//   return 'Incorrect parentheses';
+// }} stack 
+ */
 
 function sort(stack){
-  let temp = new Stack();
-  let final = new Stack();
-  //holder largest node
-  let largestNode = null;
-  //while loop 
-  let node = stack.top;
-  while(node !== null){
-    if(node.data > largestNode){
-      largestNode = node;
-    }
-    node = node.next;
+  let tempStack = new Stack();
+  let tempValue = null;
+  if(stack.top === null){
+    return 'This is an empty stack';
   }
-
-  node = stack.top;
-  //push pop values into tempStack until you reach largest
-  while(node !== null){
-    if(node !== largestNode){
-      temp.push(stack.pop());
+  tempStack.push(stack.pop());
+  while(stack.top !== null){
+    tempValue = stack.pop();
+    if(peek(tempStack).data > tempValue){
+      stack.push(tempStack.pop());
+      tempStack.push(tempValue);
     }
     else{
-      final.push(stack.pop());
+      tempStack.push(tempValue);
     }
-    node=node.next;
   }
-
-  node = temp.top;
+  while(tempStack.top !== null){
+    stack.push(tempStack.pop());
+  }
+  return stack;
 }
-
+/**
+ *                 3        1
+ *        1        2        2
+ *   3        2    1        3
+ * start         temp     goal
+ */
 let number = new Stack();
 number.push(3);
 number.push(1);
 number.push(2);
+//console.log(sort(number));
 
-console.log(sort(number));
+
+
+class queueWstack {
+  constructor(){
+    this.stack = new Stack();
+  }
+  enqueue(value){
+    this.stack.push(value);
+  }
+  dequeue(){
+    let tempStack = new Stack();
+    if(this.stack.top === null){
+      return;
+    }
+    while(this.stack.top !== null){
+      tempStack.push(this.stack.pop());
+    } 
+    let item = tempStack.pop();
+    while(tempStack.top !== null){
+      this.stack.push(tempStack.pop());
+    }
+    return item;
+  }
+}
+
+function mainQwS(){
+  let starTrek = new queueWstack;
+  starTrek.enqueue('Kirk');
+  starTrek.enqueue('whoever');
+  starTrek.enqueue('cat');
+  starTrek.dequeue();
+  console.log(starTrek);
+  return starTrek;
+}
+//console.log(mainQwS());
