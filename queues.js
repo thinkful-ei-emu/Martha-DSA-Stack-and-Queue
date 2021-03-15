@@ -130,3 +130,21 @@ function mainDoubly(){
   return starTrekQ;
 }
 //console.log(display(mainDoubly()));
+
+
+function ophidian(){
+  //queue of people 
+  let bank = new Queue;
+  if(queue.first === null){
+    return 'no people in line';
+  }
+  setInterval(()=> {
+    queue.enqueue(Math.floor(Math.random()*4) > 1);
+    let first = bank.dequeue();
+    if(!first){
+      bank.enqueue(Math.floor(Math.random()*4) > 1);
+    }
+    console.log(display(bank));
+  }, 2000);
+}
+//console.log(ophidian());
